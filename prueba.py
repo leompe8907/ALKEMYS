@@ -21,38 +21,38 @@ def ul(link, nombre):
 ##Variables##
 contador=0
 
-### descargar csv ###
+### descargar csv y nombrar archivos ###
 print("BIENVENIDOS AL PROGRAMA PARA CREAR Y ANALIZAR BASES DE DATOS APARTIR DE ARCHIVOS CSV")
-opcion = int(input("que de sea hacer 1:completo    2:crear tabla   3:crear tabla   "))
-if opcion == 1:
-    archivoCsv = int(input("CUANTOS ARCHIVOS CSV VA A DESCARGAR: "))
-    if archivoCsv > 0:
-        while contador < archivoCsv:
-            Url = input(" por favor introduzca el link de donde se va a descargar el archivo csv: ")
-            name = input (" por favor indique el nombre del archivo a guardar: ")
-            fecha = time.strftime("%d-%m-%y")
-            nombreArchivo = name+"-"+fecha+'.csv'
-            ruta = pathlib.Path('.')
-            archivos = ruta/nombreArchivo
-            if archivos.exists():
-                nuevoNombreArchivo =input("por favor elija otro nombre debido a que este ya existe: ")
-                nombre = nuevoNombreArchivo +"-"+fecha+'.csv'
-                nombreArchivo = ruta/nombre
-                os.rename(archivos,nombreArchivo)
-            ul(Url,nombreArchivo)
-            contador+=1
+
+archivoCsv = int(input("CUANTOS ARCHIVOS CSV VA A DESCARGAR: "))
+    
+if archivoCsv > 0:
+    while contador < archivoCsv:
+        Url = input(" por favor introduzca el link de donde se va a descargar el archivo csv: ")
+        name = input (" por favor indique el nombre del archivo a guardar: ")
+        fecha = time.strftime("%d-%m-%y")
+        nombreArchivo = name+"-"+fecha+'.csv'
+        ruta = pathlib.Path('.')
+        archivos = ruta/nombreArchivo
+        if archivos.exists():
+            nuevoNombreArchivo =input("por favor elija otro nombre debido a que este ya existe: ")
+            nombre = nuevoNombreArchivo +"-"+fecha+'.csv'
+            nombreArchivo = ruta/nombre
+            os.rename(archivos,nombreArchivo)
+        ul(Url,nombreArchivo)
+        contador+=1
     else:
         print("GRACIAS POR USAR EL PROGRAMA")
 
 
-### lectura de archivos
-if opcion == 2:
+### lectura de archivos ###
+
     ruta = pathlib.Path('.')
     for files in ruta.glob('*.csv'):
-        read =pd.read_csv(files,sep=',')#,names=['cod_localidad','id_provincia','id_departamento','categoria','provincia','localidad','nombre','domicilio','código_postal','numero_de_telefono','mail','web']#
+        read =pd.read_csv(files,sep=',')
         print(read)
-
-if opcion == 3:
+        
+### crear tabla en postgres ###
     connection = psycopg2.connect(
     host="localhost",
     user="postgres",
@@ -73,7 +73,3 @@ if opcion == 3:
 
     crearTabla()   
         
-
-# leer = csv.reader(lineas)
-# leer = open(nombreArchivo,'wb')
-# leer.write(file.content)
